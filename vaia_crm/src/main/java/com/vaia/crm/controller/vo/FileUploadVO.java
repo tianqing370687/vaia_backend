@@ -1,11 +1,11 @@
-package com.vaia.crm.ao;
+package com.vaia.crm.controller.vo;
 
 import java.util.Arrays;
 
 /**
  * Created by ubuntu on 18-4-14.
  */
-public class FileUploadAO {
+public class FileUploadVO {
 
     private int errno;
     private String[] data;
@@ -28,7 +28,7 @@ public class FileUploadAO {
 
     @Override
     public String toString() {
-        return "FileUploadAO{" +
+        return "FileUploadVO{" +
                 "errno='" + errno + '\'' +
                 ", data=" + Arrays.toString(data) +
                 '}';

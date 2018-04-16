@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vaia.mapper.ArticleConfigurationMapper">
+  <resultMap id="BaseResultMap" type="com.vaia.entity.ArticleConfiguration">
+    <id column="ac_id" jdbcType="INTEGER" property="acId" />
+    <result column="main_title" jdbcType="VARCHAR" property="mainTitle" />
+    <result column="subtitle" jdbcType="VARCHAR" property="subtitle" />
+    <result column="article_introduction" jdbcType="VARCHAR" property="articleIntroduction" />
+    <result column="background_img_url" jdbcType="VARCHAR" property="backgroundImgUrl" />
+    <result column="thumbnail_url" jdbcType="VARCHAR" property="thumbnailUrl" />
+    <result column="mob_background_img_url" jdbcType="VARCHAR" property="mobBackgroundImgUrl" />
+    <result column="mob_thumbnail_url" jdbcType="VARCHAR" property="mobThumbnailUrl" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="release_time" jdbcType="TIMESTAMP" property="releaseTime" />
+    <result column="theme" jdbcType="INTEGER" property="theme" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ac_id, main_title, subtitle, article_introduction, background_img_url, thumbnail_url, 
+    mob_background_img_url, mob_thumbnail_url, create_time, release_time, theme,status,
+    user_id, author
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from article_configuration
+    where ac_id = #{acId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from article_configuration
+    where ac_id = #{acId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vaia.entity.ArticleConfiguration">
+    <selectKey keyProperty="acId" order="AFTER" resultType="int">
+      select LAST_INSERT_ID()
+    </selectKey>
+    insert into article_configuration (ac_id, main_title, subtitle, 
+      article_introduction, background_img_url, 
+      thumbnail_url, mob_background_img_url, mob_thumbnail_url, 
+      create_time, release_time,theme, status, user_id, author)
+    values (#{acId,jdbcType=INTEGER}, #{mainTitle,jdbcType=VARCHAR}, #{subtitle,jdbcType=VARCHAR}, 
+      #{articleIntroduction,jdbcType=VARCHAR}, #{backgroundImgUrl,jdbcType=VARCHAR}, 
+      #{thumbnailUrl,jdbcType=VARCHAR}, #{mobBackgroundImgUrl,jdbcType=VARCHAR}, #{mobThumbnailUrl,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{releaseTime,jdbcType=TIMESTAMP}, #{theme,jdbcType=INTEGER},
+      #{status,jdbcType=INTEGER},#{userId,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vaia.entity.ArticleConfiguration">
+    insert into article_configuration
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="acId != null">
+        ac_id,
+      </if>
+      <if test="mainTitle != null">
+        main_title,
+      </if>
+      <if test="subtitle != null">
+        subtitle,
+      </if>
+      <if test="articleIntroduction != null">
+        article_introduction,
+      </if>
+      <if test="backgroundImgUrl != null">
+        background_img_url,
+      </if>
+      <if test="thumbnailUrl != null">
+        thumbnail_url,
+      </if>
+      <if test="mobBackgroundImgUrl != null">
+        mob_background_img_url,
+      </if>
+      <if test="mobThumbnailUrl != null">
+        mob_thumbnail_url,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="releaseTime != null">
+        release_time,
+      </if>
+      <if test="theme != null">
+        theme,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="acId != null">
+        #{acId,jdbcType=INTEGER},
+      </if>
+      <if test="mainTitle != null">
+        #{mainTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null">
+        #{subtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleIntroduction != null">
+        #{articleIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="backgroundImgUrl != null">
+        #{backgroundImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="thumbnailUrl != null">
+        #{thumbnailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mobBackgroundImgUrl != null">
+        #{mobBackgroundImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mobThumbnailUrl != null">
+        #{mobThumbnailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="releaseTime != null">
+        #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="theme != null">
+        #{theme,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vaia.entity.ArticleConfiguration">
+    update article_configuration
+    <set>
+      <if test="mainTitle != null">
+        main_title = #{mainTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null">
+        subtitle = #{subtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleIntroduction != null">
+        article_introduction = #{articleIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="backgroundImgUrl != null">
+        background_img_url = #{backgroundImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="thumbnailUrl != null">
+        thumbnail_url = #{thumbnailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mobBackgroundImgUrl != null">
+        mob_background_img_url = #{mobBackgroundImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mobThumbnailUrl != null">
+        mob_thumbnail_url = #{mobThumbnailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="releaseTime != null">
+        release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="theme != null">
+        status = #{theme,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ac_id = #{acId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vaia.entity.ArticleConfiguration">
+    update article_configuration
+    set main_title = #{mainTitle,jdbcType=VARCHAR},
+      subtitle = #{subtitle,jdbcType=VARCHAR},
+      article_introduction = #{articleIntroduction,jdbcType=VARCHAR},
+      background_img_url = #{backgroundImgUrl,jdbcType=VARCHAR},
+      thumbnail_url = #{thumbnailUrl,jdbcType=VARCHAR},
+      mob_background_img_url = #{mobBackgroundImgUrl,jdbcType=VARCHAR},
+      mob_thumbnail_url = #{mobThumbnailUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      theme = #{theme,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      author = #{author,jdbcType=VARCHAR}
+    where ac_id = #{acId,jdbcType=INTEGER}
+  </update>
+
+  <select id="findByPage" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM article_configuration
+  </select>
+
+</mapper>

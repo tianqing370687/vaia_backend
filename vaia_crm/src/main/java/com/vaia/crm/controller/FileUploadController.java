@@ -1,13 +1,15 @@
 package com.vaia.crm.controller;
 
-import com.vaia.crm.ao.FileUploadAO;
 import com.vaia.entity.TestEntity;
 import com.vaia.mapper.TestEntityMapper;
 import com.vaia.utils.AliyunOssUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -24,11 +26,8 @@ public class FileUploadController {
     @Autowired
     TestEntityMapper testEntityMapper;
 
-    @ResponseBody
-    @RequestMapping(value = "/imgUpload",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
-    public FileUploadAO imgUpload(@RequestParam("img") MultipartFile img){
-
-        FileUploadAO ao = new FileUploadAO();
+    @RequestMapping(value = "/imgUpload",method = RequestMethod.POST)
+    public String imgUpload(@RequestParam("img") MultipartFile img){
         String url = utils.uploadImg(img);
         logger.info("the url of img is : {}",url);
 
