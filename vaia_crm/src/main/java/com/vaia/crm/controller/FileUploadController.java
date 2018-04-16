@@ -1,5 +1,6 @@
 package com.vaia.crm.controller;
 
+import com.vaia.crm.controller.vo.FileUploadVO;
 import com.vaia.entity.TestEntity;
 import com.vaia.mapper.TestEntityMapper;
 import com.vaia.utils.AliyunOssUtils;
@@ -27,15 +28,17 @@ public class FileUploadController {
     TestEntityMapper testEntityMapper;
 
     @RequestMapping(value = "/imgUpload",method = RequestMethod.POST)
-    public String imgUpload(@RequestParam("img") MultipartFile img){
+    public FileUploadVO imgUpload(@RequestParam("img") MultipartFile img){
+
+        FileUploadVO vo = new FileUploadVO();
         String url = utils.uploadImg(img);
         logger.info("the url of img is : {}",url);
 
         String[] data = {url};
-        ao.setErrno(0);
-        ao.setData(data);
+        vo.setErrno(0);
+        vo.setData(data);
 
-        return ao;
+        return vo;
     }
     @RequestMapping(value = "/listTest",method = RequestMethod.GET)
     public String listTest(){
