@@ -3,6 +3,7 @@ package com.vaia.crm.controller;
 import com.vaia.entity.TestEntity;
 import com.vaia.mapper.TestEntityMapper;
 import com.vaia.utils.AliyunOssUtils;
+import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class FileUploadController {
     @Autowired
     TestEntityMapper testEntityMapper;
 
+    @ApiOperation(value = "上传文件", notes = "")
     @RequestMapping(value = "/imgUpload",method = RequestMethod.POST)
     public String imgUpload(@RequestParam("img") MultipartFile img){
         String url = utils.uploadImg(img);
