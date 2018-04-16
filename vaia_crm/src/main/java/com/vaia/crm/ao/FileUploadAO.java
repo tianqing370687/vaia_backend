@@ -7,14 +7,14 @@ import java.util.Arrays;
  */
 public class FileUploadAO {
 
-    private String errno;
+    private int errno;
     private String[] data;
 
-    public String getErrno() {
+    public int getErrno() {
         return errno;
     }
 
-    public void setErrno(String errno) {
+    public void setErrno(int errno) {
         this.errno = errno;
     }
 
