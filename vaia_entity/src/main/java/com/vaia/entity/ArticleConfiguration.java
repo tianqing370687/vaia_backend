@@ -31,6 +31,32 @@ public class ArticleConfiguration {
 
     private String author;
 
+    private ArticleDetail articleDetail;
+
+    public ArticleConfiguration() {
+    }
+
+    public ArticleConfiguration(Integer acId, String mainTitle, String subtitle, String articleIntroduction,
+                                String backgroundImgUrl, String thumbnailUrl, String mobBackgroundImgUrl,
+                                String mobThumbnailUrl, Date createTime, Date releaseTime, Integer theme,
+                                Integer status, Integer userId, String author,ArticleDetail articleDetail) {
+        this.acId = acId;
+        this.mainTitle = mainTitle;
+        this.subtitle = subtitle;
+        this.articleIntroduction = articleIntroduction;
+        this.backgroundImgUrl = backgroundImgUrl;
+        this.thumbnailUrl = thumbnailUrl;
+        this.mobBackgroundImgUrl = mobBackgroundImgUrl;
+        this.mobThumbnailUrl = mobThumbnailUrl;
+        this.createTime = createTime;
+        this.releaseTime = releaseTime;
+        this.theme = theme;
+        this.status = status;
+        this.userId = userId;
+        this.author = author;
+        this.articleDetail = articleDetail;
+    }
+
     public Integer getAcId() {
         return acId;
     }
@@ -141,5 +167,13 @@ public class ArticleConfiguration {
 
     public void setAuthor(String author) {
         this.author = author == null ? null : author.trim();
+    }
+
+    public ArticleDetail getArticleDetail() {
+        return articleDetail;
+    }
+
+    public void setArticleDetail(ArticleDetail articleDetail) {
+        this.articleDetail = articleDetail;
     }
 }

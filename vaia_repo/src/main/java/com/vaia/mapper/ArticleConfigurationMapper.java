@@ -21,4 +21,6 @@ public interface ArticleConfigurationMapper {
     int updateByPrimaryKey(ArticleConfiguration record);
 
     Page<ArticleConfiguration> findByPage();
+
+    ArticleConfiguration getArticleById(Integer acId);
 }

@@ -23,4 +23,6 @@ public interface ArticleService {
 
     RetMessageEnum saveArticle(int acId,String articleText);
 
+    ArticleConfiguration getArticleById(int acId);
+
 }

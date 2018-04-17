@@ -94,4 +94,10 @@ public class ArticleServiceImpl implements ArticleService {
         return RetMessageEnum.SUCCESS;
     }
 
+    @Override
+    public ArticleConfiguration getArticleById(int acId){
+        ArticleConfiguration configuration = articleConfigurationMapper.getArticleById(acId);
+        return configuration;
+    }
+
 }

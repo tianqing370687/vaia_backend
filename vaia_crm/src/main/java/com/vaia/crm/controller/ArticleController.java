@@ -13,6 +13,7 @@ import com.vaia.crm.controller.vo.CreateArticleConfigVO;
 import com.vaia.crm.controller.vo.GetArticleConfigVO;
 import com.vaia.crm.controller.vo.ListArticleConfigByPageVO;
 import com.vaia.entity.ArticleConfiguration;
+import com.vaia.entity.ArticleDetail;
 import com.vaia.utils.AliyunOssUtils;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
@@ -135,6 +136,16 @@ public class ArticleController {
         RetMessageEnum retMessageEnum = articleService.saveArticle(form.getAcId(),form.getArticleText());
         vo.setRet(retMessageEnum);
         return vo;
+    }
+
+    @ApiOperation(value = "保存文章主体", notes = "")
+    @RequestMapping(value = "/test",method = RequestMethod.POST)
+    public BaseVO test(){
+        ArticleConfiguration configuration = articleService.getArticleById(2);
+        ArticleDetail detail = configuration.getArticleDetail();
+        logger.info("details : {}",detail.toString());
+        return null;
+
     }
 
 }

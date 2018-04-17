@@ -17,6 +17,26 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="author" jdbcType="VARCHAR" property="author" />
   </resultMap>
+  <resultMap id="ArticleConfigurationResultMap" type="com.vaia.entity.ArticleConfiguration">
+    <id column="ac_id" jdbcType="INTEGER" property="acId" />
+    <result column="main_title" jdbcType="VARCHAR" property="mainTitle" />
+    <result column="subtitle" jdbcType="VARCHAR" property="subtitle" />
+    <result column="article_introduction" jdbcType="VARCHAR" property="articleIntroduction" />
+    <result column="background_img_url" jdbcType="VARCHAR" property="backgroundImgUrl" />
+    <result column="thumbnail_url" jdbcType="VARCHAR" property="thumbnailUrl" />
+    <result column="mob_background_img_url" jdbcType="VARCHAR" property="mobBackgroundImgUrl" />
+    <result column="mob_thumbnail_url" jdbcType="VARCHAR" property="mobThumbnailUrl" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="release_time" jdbcType="TIMESTAMP" property="releaseTime" />
+    <result column="theme" jdbcType="INTEGER" property="theme" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <association property="articleDetail" javaType="com.vaia.entity.ArticleDetail">
+      <id column="article_id" jdbcType="INTEGER" property="articleId" />
+      <result column="article" jdbcType="LONGVARCHAR" property="article" />
+    </association>
+  </resultMap>
   <sql id="Base_Column_List">
     ac_id, main_title, subtitle, article_introduction, background_img_url, thumbnail_url, 
     mob_background_img_url, mob_thumbnail_url, create_time, release_time, theme,status,
@@ -204,6 +224,14 @@
     SELECT
     <include refid="Base_Column_List" />
     FROM article_configuration
+  </select>
+
+  <select id="getArticleById" resultMap="ArticleConfigurationResultMap" parameterType="java.lang.Integer">
+    SELECT *
+    FROM article_configuration t1,article_detail t2
+    WHERE
+    t1.ac_id = t2.article_id
+    AND t1.ac_id = #{acId,jdbcType=INTEGER}
   </select>
 
 </mapper>
