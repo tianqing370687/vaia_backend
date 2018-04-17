@@ -1,6 +1,5 @@
 package com.vaia.service.impl;
 
-import com.vaia.constant.RetMessageEnum;
 import com.vaia.entity.AllianceMembers;
 import com.vaia.mapper.AllianceMembersMapper;
 import com.vaia.service.AllianceMembersService;
