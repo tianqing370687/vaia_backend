@@ -1,4 +1,4 @@
-package com.vaia;
+package com.vaia.service;
 
 import com.github.pagehelper.Page;
 import com.vaia.constant.RetMessageEnum;

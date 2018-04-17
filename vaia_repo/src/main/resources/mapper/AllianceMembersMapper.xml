@@ -79,4 +79,11 @@
       company_links = #{companyLinks,jdbcType=VARCHAR}
     where member_id = #{memberId,jdbcType=INTEGER}
   </update>
+
+  <select id="listAllianceMembers" resultMap="com.vaia.entity.AllianceMembers">
+    SELECT
+    <include refid="Base_Column_List" />
+    from alliance_members
+  </select>
+
 </mapper>

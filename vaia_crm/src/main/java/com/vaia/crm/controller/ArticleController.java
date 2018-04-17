@@ -2,7 +2,7 @@ package com.vaia.crm.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
-import com.vaia.ArticleService;
+import com.vaia.service.ArticleService;
 import com.vaia.constant.RetMessageEnum;
 import com.vaia.crm.controller.form.CreateArticleConfigForm;
 import com.vaia.crm.controller.form.ListArticleConfigByPageForm;

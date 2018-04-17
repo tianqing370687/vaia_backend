@@ -23,7 +23,6 @@ public class FileUploadController {
 
     @Autowired
     AliyunOssUtils utils;
-
     @Autowired
     TestEntityMapper testEntityMapper;
 

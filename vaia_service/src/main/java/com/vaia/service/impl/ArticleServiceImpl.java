@@ -2,13 +2,13 @@ package com.vaia.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.vaia.ArticleService;
 import com.vaia.constant.RetMessageEnum;
 import com.vaia.constant.ServerConstant;
 import com.vaia.entity.ArticleConfiguration;
 import com.vaia.entity.ArticleDetail;
 import com.vaia.mapper.ArticleConfigurationMapper;
 import com.vaia.mapper.ArticleDetailMapper;
+import com.vaia.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 
 /**
- * Created by nicholas.chi on 2018/4/16.
+ * Created by ubuntu on 18-4-17.
  */
 @Service
 @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT)
@@ -65,7 +65,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public RetMessageEnum updateConfigStatus(int acId,int status){
+    public RetMessageEnum updateConfigStatus(int acId, int status){
         ArticleConfiguration configuration = articleConfigurationMapper.selectByPrimaryKey(acId);
         if(configuration == null){
             return RetMessageEnum.CAN_NOT_FIND_OBJECT;
