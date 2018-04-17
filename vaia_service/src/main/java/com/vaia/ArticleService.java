@@ -21,5 +21,6 @@ public interface ArticleService {
 
     Page<ArticleConfiguration> listArticleConfigByPage(int pageNo, int pageSize);
 
+    RetMessageEnum saveArticle(int acId,String articleText);
 
 }

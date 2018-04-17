@@ -6,7 +6,9 @@ import com.vaia.ArticleService;
 import com.vaia.constant.RetMessageEnum;
 import com.vaia.constant.ServerConstant;
 import com.vaia.entity.ArticleConfiguration;
+import com.vaia.entity.ArticleDetail;
 import com.vaia.mapper.ArticleConfigurationMapper;
+import com.vaia.mapper.ArticleDetailMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -22,6 +24,8 @@ import java.util.Date;
 @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT)
 public class ArticleServiceImpl implements ArticleService {
 
+    @Autowired
+    ArticleDetailMapper articleDetailMapper;
     @Autowired
     ArticleConfigurationMapper articleConfigurationMapper;
 
@@ -75,6 +79,19 @@ public class ArticleServiceImpl implements ArticleService {
     public Page<ArticleConfiguration> listArticleConfigByPage(int pageNo, int pageSize) {
         PageHelper.startPage(pageNo,pageSize);
         return articleConfigurationMapper.findByPage();
+    }
+
+    @Override
+    public RetMessageEnum saveArticle(int acId, String articleText) {
+        ArticleConfiguration configuration = articleConfigurationMapper.selectByPrimaryKey(acId);
+        if(configuration == null){
+            return RetMessageEnum.CAN_NOT_FIND_OBJECT;
+        }
+        ArticleDetail detail = new ArticleDetail();
+        detail.setArticleId(acId);
+        detail.setArticle(articleText);
+        articleDetailMapper.insert(detail);
+        return RetMessageEnum.SUCCESS;
     }
 
 }

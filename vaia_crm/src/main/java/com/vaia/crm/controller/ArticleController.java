@@ -6,6 +6,7 @@ import com.vaia.ArticleService;
 import com.vaia.constant.RetMessageEnum;
 import com.vaia.crm.controller.form.CreateArticleConfigForm;
 import com.vaia.crm.controller.form.ListArticleConfigByPageForm;
+import com.vaia.crm.controller.form.SaveArticleForm;
 import com.vaia.crm.controller.form.UpdateConfigStatusForm;
 import com.vaia.crm.controller.vo.BaseVO;
 import com.vaia.crm.controller.vo.CreateArticleConfigVO;
@@ -122,6 +123,18 @@ public class ArticleController {
         return vo;
     }
 
-
+    @ApiOperation(value = "保存文章主体", notes = "")
+    @RequestMapping(value = "/saveArticle",method = RequestMethod.POST)
+    public BaseVO saveArticle(@RequestBody SaveArticleForm form){
+        logger.info("method : {},param : {}",this.getClass().getSimpleName(),form.toString());
+        BaseVO vo = new BaseVO();
+        if(form.isEmpty()){
+            vo.setRet(RetMessageEnum.PARAMETER_IS_EMPTY);
+            return vo;
+        }
+        RetMessageEnum retMessageEnum = articleService.saveArticle(form.getAcId(),form.getArticleText());
+        vo.setRet(retMessageEnum);
+        return vo;
+    }
 
 }

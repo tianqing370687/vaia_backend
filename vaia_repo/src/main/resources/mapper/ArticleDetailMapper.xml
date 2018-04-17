@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vaia.mapper.ArticleDetailMapper">
+  <resultMap id="BaseResultMap" type="com.vaia.entity.ArticleDetail">
+    <id column="article_id" jdbcType="INTEGER" property="articleId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.vaia.entity.ArticleDetail">
+    <result column="article" jdbcType="LONGVARCHAR" property="article" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    article_id
+  </sql>
+  <sql id="Blob_Column_List">
+    article
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article_detail
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from article_detail
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vaia.entity.ArticleDetail">
+    insert into article_detail (article_id, article)
+    values (#{articleId,jdbcType=INTEGER}, #{article,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vaia.entity.ArticleDetail">
+    insert into article_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="articleId != null">
+        article_id,
+      </if>
+      <if test="article != null">
+        article,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="articleId != null">
+        #{articleId,jdbcType=INTEGER},
+      </if>
+      <if test="article != null">
+        #{article,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vaia.entity.ArticleDetail">
+    update article_detail
+    <set>
+      <if test="article != null">
+        article = #{article,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.vaia.entity.ArticleDetail">
+    update article_detail
+    set article = #{article,jdbcType=LONGVARCHAR}
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </update>
+</mapper>
