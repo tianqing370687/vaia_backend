@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vaia.mapper.VideoMapper">
+  <resultMap id="BaseResultMap" type="com.vaia.entity.Video">
+    <id column="video_id" jdbcType="INTEGER" property="videoId" />
+    <result column="video_name" jdbcType="VARCHAR" property="videoName" />
+    <result column="video_url" jdbcType="VARCHAR" property="videoUrl" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="uploader_id" jdbcType="INTEGER" property="uploaderId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    video_id, video_name, video_url, update_time, uploader_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from video
+    where video_id = #{videoId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from video
+    where video_id = #{videoId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vaia.entity.Video">
+    insert into video (video_id, video_name, video_url, 
+      update_time, uploader_id)
+    values (#{videoId,jdbcType=INTEGER}, #{videoName,jdbcType=VARCHAR}, #{videoUrl,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{uploaderId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vaia.entity.Video">
+    insert into video
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="videoId != null">
+        video_id,
+      </if>
+      <if test="videoName != null">
+        video_name,
+      </if>
+      <if test="videoUrl != null">
+        video_url,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="uploaderId != null">
+        uploader_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="videoId != null">
+        #{videoId,jdbcType=INTEGER},
+      </if>
+      <if test="videoName != null">
+        #{videoName,jdbcType=VARCHAR},
+      </if>
+      <if test="videoUrl != null">
+        #{videoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uploaderId != null">
+        #{uploaderId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vaia.entity.Video">
+    update video
+    <set>
+      <if test="videoName != null">
+        video_name = #{videoName,jdbcType=VARCHAR},
+      </if>
+      <if test="videoUrl != null">
+        video_url = #{videoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uploaderId != null">
+        uploader_id = #{uploaderId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where video_id = #{videoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vaia.entity.Video">
+    update video
+    set video_name = #{videoName,jdbcType=VARCHAR},
+      video_url = #{videoUrl,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      uploader_id = #{uploaderId,jdbcType=INTEGER}
+    where video_id = #{videoId,jdbcType=INTEGER}
+  </update>
+
+  <select id="listAllVideos" resultMap="com.vaia.entity.Video">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM video
+    ORDER BY update_time
+  </select>
+
+</mapper>

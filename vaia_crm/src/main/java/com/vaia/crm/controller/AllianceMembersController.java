@@ -48,7 +48,7 @@ public class AllianceMembersController {
         return vo;
     }
 
-    @ApiOperation(value = "", notes = "")
+    @ApiOperation(value = "删除", notes = "")
     @RequestMapping(value = "/deleteAllianceMembers",method = RequestMethod.POST)
     public BaseVO deleteAllianceMembers(@RequestBody DeleteAllianceMembersForm form){
         BaseVO vo = new BaseVO();
@@ -57,7 +57,7 @@ public class AllianceMembersController {
         return vo;
     }
 
-    @ApiOperation(value = "", notes = "")
+    @ApiOperation(value = "获取", notes = "")
     @RequestMapping(value = "/getAllianceMembers",method = RequestMethod.POST)
     public GetAllianceMembersVO getAllianceMembers(@RequestBody GetAllianceMembersForm form){
         AllianceMembers allianceMembers = allianceMembersService.getAllianceMembers(form.getMemberId());
@@ -66,18 +66,18 @@ public class AllianceMembersController {
             vo.setRet(RetMessageEnum.CAN_NOT_FIND_OBJECT);
             return vo;
         }
-
         GetAllianceMembersVO vo = new GetAllianceMembersVO(allianceMembers);
         vo.setRet(RetMessageEnum.SUCCESS);
         return vo;
     }
 
-    @ApiOperation(value = "", notes = "")
+    @ApiOperation(value = "获取列表", notes = "")
     @RequestMapping(value = "/listAllianceMembers",method = RequestMethod.GET)
     public ListAllianceMembersVO listAllianceMembers(){
         ListAllianceMembersVO vo = new ListAllianceMembersVO();
         List<AllianceMembers> list = allianceMembersService.listAllianceMembers();
         vo.setList(list);
+        vo.setRet(RetMessageEnum.SUCCESS);
         return vo;
     }
 

@@ -68,7 +68,7 @@ public class AliyunOssUtils {
         }
 
         if(isSuccess){
-            objUrl = "http://test-vaia.oss-cn-shanghai.aliyuncs.com/"+key;
+            objUrl = "http://vaia-www.oss-cn-shanghai.aliyuncs.com/"+key;
             logger.info("the path of file is : {}",objUrl);
             targetFile.delete();
             return objUrl;

@@ -17,6 +17,12 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
                 .allowedOrigins("*")
                 .allowCredentials(true)
                 .allowedMethods("GET", "POST", "DELETE", "PUT")
+                .allowedHeaders("*")
+                .exposedHeaders("access-control-allow-headers",
+                        "access-control-allow-methods",
+                        "access-control-allow-origin",
+                        "access-control-max-age",
+                        "X-Frame-Options")
                 .maxAge(3600);
     }
 
