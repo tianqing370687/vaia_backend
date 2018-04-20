@@ -46,4 +46,22 @@ public class VideoServiceImpl implements VideoService {
         return list;
     }
 
+    @Override
+    public int updateStatusBatch(){
+        return videoMapper.updateStatusBatch();
+    }
+
+    @Override
+    public int homeDisplay(int videoId){
+        Video video = videoMapper.selectByPrimaryKey(videoId);
+        video.setShowStatus(ServerConstant.HOME_DISPLAY_YES);
+        int i = videoMapper.updateByPrimaryKey(video);
+        return i;
+    }
+
+    @Override
+    public Video getVideByStatus(Integer showStatus) {
+        return videoMapper.getVideByStatus(showStatus);
+    }
+
 }

@@ -13,10 +13,8 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by nicholas.chi on 2018/4/16.
@@ -31,6 +29,18 @@ public class ArticleController {
     AliyunOssUtils aliyunOssUtils;
 
     private Logger logger = LogManager.getLogger(ArticleController.class);
+
+    @ApiOperation(value = "上传图片，富文本编辑器专用", notes = "")
+    @RequestMapping(value = "/imgUpload",method = RequestMethod.POST)
+    public FileUploadVO imgUpload(@RequestParam("img") MultipartFile img){
+        FileUploadVO vo = new FileUploadVO();
+        String url = aliyunOssUtils.uploadImg(img);
+        logger.info("the url of img is : {}",url);
+        String[] data = {url};
+        vo.setErrno(0);
+        vo.setData(data);
+        return vo;
+    }
 
     @ApiOperation(value = "保存文章配置", notes = "")
     @RequestMapping(value = "/createArticleConfig",method = RequestMethod.POST,consumes = "multipart/form-data")
@@ -135,12 +145,6 @@ public class ArticleController {
         GetArticleDetailsVO vo = new GetArticleDetailsVO(configuration,detail);
         vo.setRet(RetMessageEnum.SUCCESS);
         return vo;
-    }
-
-    @ApiOperation(value = "修改文章详情", notes = "")
-    @RequestMapping(value = "/updateArticleConfig",method = RequestMethod.POST)
-    public void updateArticleDetails(@RequestBody UpdateArticleDetailsForm form){
-
     }
 
 }

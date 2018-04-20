@@ -22,4 +22,8 @@ public interface VideoMapper {
     int updateByPrimaryKey(Video record);
 
     List<Video> listAllVideos();
+
+    int updateStatusBatch();
+
+    Video getVideByStatus(Integer showStatus);
 }

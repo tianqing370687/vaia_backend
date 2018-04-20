@@ -4,6 +4,8 @@ import com.github.pagehelper.Page;
 import com.vaia.constant.RetMessageEnum;
 import com.vaia.entity.ArticleConfiguration;
 
+import java.util.List;
+
 /**
  * Created by nicholas.chi on 2018/4/16.
  */
@@ -24,5 +26,9 @@ public interface ArticleService {
     RetMessageEnum saveArticle(int acId,String articleText);
 
     ArticleConfiguration getArticleById(int acId);
+
+    Page<ArticleConfiguration> getArticleByPage(int pageNo, int pageSize,int status, String time, int theme);
+
+    List<ArticleConfiguration> getArticleByParam(int status, String time, int theme);
 
 }

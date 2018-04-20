@@ -104,11 +104,16 @@
     where video_id = #{videoId,jdbcType=INTEGER}
   </update>
 
-  <select id="listAllVideos" resultType="com.vaia.entity.Video">
-    SELECT
-    <include refid="Base_Column_List" />
-    FROM video
-    ORDER BY update_time
+  <select id="listAllVideos" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> FROM video ORDER BY update_time
+  </select>
+
+  <update id="updateStatusBatch">
+    UPDATE video SET show_status = 0 WHERE show_status = 1
+  </update>
+
+  <select id="getVideByStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> FROM  video WHERE show_status = #{showStatus,jdbcType=INTEGER}
   </select>
 
 </mapper>

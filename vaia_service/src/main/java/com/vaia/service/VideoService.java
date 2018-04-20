@@ -17,4 +17,10 @@ public interface VideoService {
 
     List<Video> listVideos();
 
+    int updateStatusBatch();
+
+    int homeDisplay(int videoId);
+
+    Video getVideByStatus(Integer showStatus);
+
 }

@@ -5,6 +5,9 @@ import com.vaia.entity.ArticleConfiguration;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 @Component("articleConfigurationMapper")
 public interface ArticleConfigurationMapper {
@@ -23,4 +26,7 @@ public interface ArticleConfigurationMapper {
     Page<ArticleConfiguration> findByPage();
 
     ArticleConfiguration getArticleById(Integer acId);
+
+    Page<ArticleConfiguration> getArticleByParam(Map<String, Object> map);
+//    List<ArticleConfiguration> getArticleByParam(Map<String, Object> map);
 }

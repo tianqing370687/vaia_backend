@@ -231,4 +231,18 @@
     AND t1.ac_id = #{acId,jdbcType=INTEGER}
   </select>
 
+  <select id="getArticleByParam" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT  <include refid="Base_Column_List" />
+    FROM article_configuration
+    WHERE 1=1
+    <if test="status != null">
+      AND status = #{status,jdbcType=INTEGER}
+    </if>
+    <if test="time != null">
+      AND YEAR(release_time) = #{time,jdbcType=VARCHAR}
+    </if>
+    AND theme = #{theme,jdbcType=INTEGER}
+    ORDER BY release_time DESC
+  </select>
+
 </mapper>

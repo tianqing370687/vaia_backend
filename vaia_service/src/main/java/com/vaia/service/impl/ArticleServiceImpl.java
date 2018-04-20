@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ubuntu on 18-4-17.
@@ -98,6 +101,26 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleConfiguration getArticleById(int acId){
         ArticleConfiguration configuration = articleConfigurationMapper.getArticleById(acId);
         return configuration;
+    }
+
+    @Override
+    public Page<ArticleConfiguration> getArticleByPage(int pageNo, int pageSize,int status, String time, int theme){
+        PageHelper.startPage(pageNo,pageSize);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("status",status);
+        params.put("time",time);
+        params.put("theme",theme);
+        return articleConfigurationMapper.getArticleByParam(params);
+    }
+
+    @Override
+    public List<ArticleConfiguration> getArticleByParam(int status, String time, int theme){
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("status",status);
+        params.put("time",time);
+        params.put("theme",theme);
+        List<ArticleConfiguration> list = articleConfigurationMapper.getArticleByParam(params);
+        return list;
     }
 
 }

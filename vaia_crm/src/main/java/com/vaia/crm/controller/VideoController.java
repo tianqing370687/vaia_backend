@@ -3,6 +3,7 @@ package com.vaia.crm.controller;
 import com.vaia.constant.RetMessageEnum;
 import com.vaia.crm.controller.form.DeleteVideoForm;
 import com.vaia.crm.controller.form.GetVideoForm;
+import com.vaia.crm.controller.form.HomeDisplayForm;
 import com.vaia.crm.controller.form.SaveVideoForm;
 import com.vaia.crm.controller.vo.BaseVO;
 import com.vaia.crm.controller.vo.GetVideoVO;
@@ -88,8 +89,16 @@ public class VideoController {
 
     @ApiOperation(value = "首页显示", notes = "")
     @RequestMapping(value = "/homeDisplay",method = RequestMethod.POST)
-    public BaseVO homeDisplay(int videoId){
-        return null;
+    public BaseVO homeDisplay(@RequestBody HomeDisplayForm form){
+        BaseVO vo = new BaseVO();
+        videoService.updateStatusBatch();
+        int i = videoService.homeDisplay(form.getVideoId());
+        if(i < 0){
+            vo.setRet(RetMessageEnum.FAILUE);
+            return vo;
+        }
+        vo.setRet(RetMessageEnum.SUCCESS);
+        return vo;
     }
 
 }
