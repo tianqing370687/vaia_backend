@@ -52,10 +52,7 @@
     delete from article_configuration
     where ac_id = #{acId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.vaia.entity.ArticleConfiguration">
-    <selectKey keyProperty="acId" order="AFTER" resultType="int">
-      select LAST_INSERT_ID()
-    </selectKey>
+  <insert id="insert" parameterType="com.vaia.entity.ArticleConfiguration" useGeneratedKeys="true" keyProperty="acId">
     insert into article_configuration (ac_id, main_title, subtitle, 
       article_introduction, background_img_url, 
       thumbnail_url, mob_background_img_url, mob_thumbnail_url, 

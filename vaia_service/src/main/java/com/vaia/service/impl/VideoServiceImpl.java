@@ -1,5 +1,6 @@
 package com.vaia.service.impl;
 
+import com.vaia.constant.ServerConstant;
 import com.vaia.entity.Video;
 import com.vaia.mapper.VideoMapper;
 import com.vaia.service.VideoService;
@@ -25,6 +26,7 @@ public class VideoServiceImpl implements VideoService {
         video.setVideoUrl(videoUrl);
         video.setUpdateTime(new Date());
         video.setUploaderId(uploaderId);
+        video.setShowStatus(ServerConstant.HOME_DISPLAY_NO);
         videoMapper.insert(video);
     }
 

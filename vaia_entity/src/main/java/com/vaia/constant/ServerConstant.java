@@ -19,5 +19,13 @@ public class ServerConstant {
      * 文章已发布
      * */
     public static final int ARTICLE_STATUS_RELEASE = 1;
+    /**
+     * 首页显示（NO）
+     * */
+    public static final int HOME_DISPLAY_NO = 0;
+    /**
+     * 首页显示（YES）
+     * */
+    public static final int HOME_DISPLAY_YES = 1;
 
 }

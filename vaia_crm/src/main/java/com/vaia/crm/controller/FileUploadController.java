@@ -23,8 +23,6 @@ public class FileUploadController {
 
     @Autowired
     AliyunOssUtils utils;
-    @Autowired
-    TestEntityMapper testEntityMapper;
 
     @RequestMapping(value = "/imgUpload",method = RequestMethod.POST)
     public FileUploadVO imgUpload(@RequestParam("img") MultipartFile img){
@@ -39,13 +37,4 @@ public class FileUploadController {
 
         return vo;
     }
-    @RequestMapping(value = "/listTest",method = RequestMethod.GET)
-    public String listTest(){
-        TestEntity entity = testEntityMapper.selectByPrimaryKey(1);
-        logger.info("entity : {}",entity.toString());
-        return "success";
-    }
-
-
-
 }

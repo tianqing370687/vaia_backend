@@ -8,13 +8,17 @@ import com.vaia.crm.controller.vo.BaseVO;
 import com.vaia.crm.controller.vo.GetVideoVO;
 import com.vaia.crm.controller.vo.ListAllVideosVO;
 import com.vaia.entity.Video;
+import com.vaia.mapper.VideoMapper;
 import com.vaia.service.VideoService;
 import com.vaia.utils.AliyunOssUtils;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,9 +32,11 @@ public class VideoController {
     @Autowired
     VideoService videoService;
 
+    private Logger logger = LogManager.getLogger(VideoController.class);
+
     @ApiOperation(value = "保存视频", notes = "")
     @RequestMapping(value = "/saveVideo",method = RequestMethod.POST,consumes = "multipart/form-data")
-    public BaseVO saveVideo(@RequestParam("video") SaveVideoForm form){
+    public BaseVO saveVideo(SaveVideoForm form){
         BaseVO vo = new BaseVO();
         int userId = 0;
         if(form.isEmpty()){
@@ -80,5 +86,10 @@ public class VideoController {
         return vo;
     }
 
+    @ApiOperation(value = "首页显示", notes = "")
+    @RequestMapping(value = "/homeDisplay",method = RequestMethod.POST)
+    public BaseVO homeDisplay(int videoId){
+        return null;
+    }
 
 }

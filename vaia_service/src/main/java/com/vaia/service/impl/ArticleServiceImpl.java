@@ -50,8 +50,8 @@ public class ArticleServiceImpl implements ArticleService {
         configuration.setReleaseTime(new Date());
         configuration.setStatus(ServerConstant.ARTICLE_STATUS_UNPUBLISHED);
 
-        int acId = articleConfigurationMapper.insert(configuration);
-        return acId;
+        articleConfigurationMapper.insert(configuration);
+        return configuration.getAcId();
     }
 
     @Override

@@ -2,16 +2,10 @@ package com.vaia.crm.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import com.vaia.crm.controller.form.*;
+import com.vaia.crm.controller.vo.*;
 import com.vaia.service.ArticleService;
 import com.vaia.constant.RetMessageEnum;
-import com.vaia.crm.controller.form.CreateArticleConfigForm;
-import com.vaia.crm.controller.form.ListArticleConfigByPageForm;
-import com.vaia.crm.controller.form.SaveArticleForm;
-import com.vaia.crm.controller.form.UpdateConfigStatusForm;
-import com.vaia.crm.controller.vo.BaseVO;
-import com.vaia.crm.controller.vo.CreateArticleConfigVO;
-import com.vaia.crm.controller.vo.GetArticleConfigVO;
-import com.vaia.crm.controller.vo.ListArticleConfigByPageVO;
 import com.vaia.entity.ArticleConfiguration;
 import com.vaia.entity.ArticleDetail;
 import com.vaia.utils.AliyunOssUtils;
@@ -87,12 +81,6 @@ public class ArticleController {
         return vo;
     }
 
-    @ApiOperation(value = "修改文章配置", notes = "暂不提供该功能")
-    @RequestMapping(value = "/updateArticleConfig",method = RequestMethod.POST)
-    public void updateArticleConfig(){
-
-    }
-
     @ApiOperation(value = "删除文章配置", notes = "")
     @RequestMapping(value = "/deleteArticleConfig",method = RequestMethod.POST)
     public BaseVO deleteArticleConfig(int acId){
@@ -113,7 +101,7 @@ public class ArticleController {
     }
 
     @ApiOperation(value = "分页获取文章配置", notes = "")
-    @RequestMapping(value = "/listArticleConfigByPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/listArticleConfigByPage",method = RequestMethod.POST)
     public ListArticleConfigByPageVO listArticleConfigByPage(@RequestBody ListArticleConfigByPageForm form){
         logger.info("method : {},param : {}",this.getClass().getSimpleName(),form.toString());
         ListArticleConfigByPageVO vo = new ListArticleConfigByPageVO();
@@ -138,13 +126,20 @@ public class ArticleController {
         return vo;
     }
 
-    @ApiOperation(value = "保存文章主体", notes = "")
-    @RequestMapping(value = "/test",method = RequestMethod.POST)
-    public BaseVO test(){
-        ArticleConfiguration configuration = articleService.getArticleById(2);
+    @ApiOperation(value = "获取文章详情", notes = "")
+    @RequestMapping(value = "/getArticleDetails",method = RequestMethod.POST)
+    public GetArticleDetailsVO getArticleDetails(@RequestBody GetArticleDetailsForm form){
+        ArticleConfiguration configuration = articleService.getArticleById(form.getAcId());
         ArticleDetail detail = configuration.getArticleDetail();
         logger.info("details : {}",detail.toString());
-        return null;
+        GetArticleDetailsVO vo = new GetArticleDetailsVO(configuration,detail);
+        vo.setRet(RetMessageEnum.SUCCESS);
+        return vo;
+    }
+
+    @ApiOperation(value = "修改文章详情", notes = "")
+    @RequestMapping(value = "/updateArticleConfig",method = RequestMethod.POST)
+    public void updateArticleDetails(@RequestBody UpdateArticleDetailsForm form){
 
     }
 

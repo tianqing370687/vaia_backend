@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vaia.mapper.VideoMapper">
+<mapper namespace="com.vaia.entity.VideoMapper">
   <resultMap id="BaseResultMap" type="com.vaia.entity.Video">
     <id column="video_id" jdbcType="INTEGER" property="videoId" />
     <result column="video_name" jdbcType="VARCHAR" property="videoName" />
@@ -13,7 +13,7 @@
     video_id, video_name, video_url, update_time, uploader_id, show_status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from video
     where video_id = #{videoId,jdbcType=INTEGER}
@@ -23,12 +23,12 @@
     where video_id = #{videoId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.vaia.entity.Video">
-    insert into video (video_id, video_name, video_url,
-    update_time, uploader_id, show_status
-    )
-    values (#{videoId,jdbcType=INTEGER}, #{videoName,jdbcType=VARCHAR}, #{videoUrl,jdbcType=VARCHAR},
-    #{updateTime,jdbcType=TIMESTAMP}, #{uploaderId,jdbcType=INTEGER}, #{showStatus,jdbcType=INTEGER}
-    )
+    insert into video (video_id, video_name, video_url, 
+      update_time, uploader_id, show_status
+      )
+    values (#{videoId,jdbcType=INTEGER}, #{videoName,jdbcType=VARCHAR}, #{videoUrl,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{uploaderId,jdbcType=INTEGER}, #{showStatus,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.vaia.entity.Video">
     insert into video
@@ -103,12 +103,4 @@
       show_status = #{showStatus,jdbcType=INTEGER}
     where video_id = #{videoId,jdbcType=INTEGER}
   </update>
-
-  <select id="listAllVideos" resultType="com.vaia.entity.Video">
-    SELECT
-    <include refid="Base_Column_List" />
-    FROM video
-    ORDER BY update_time
-  </select>
-
 </mapper>
