@@ -1,6 +1,7 @@
 package com.vaia.crm.controller;
 
 import com.vaia.constant.RetMessageEnum;
+import com.vaia.crm.config.WebSecurityConfig;
 import com.vaia.crm.controller.form.DeleteVideoForm;
 import com.vaia.crm.controller.form.GetVideoForm;
 import com.vaia.crm.controller.form.HomeDisplayForm;
@@ -10,6 +11,7 @@ import com.vaia.crm.controller.vo.GetVideoVO;
 import com.vaia.crm.controller.vo.ListAllVideosVO;
 import com.vaia.entity.Video;
 import com.vaia.mapper.VideoMapper;
+import com.vaia.service.UserInfoService;
 import com.vaia.service.VideoService;
 import com.vaia.utils.AliyunOssUtils;
 import io.swagger.annotations.ApiOperation;
@@ -19,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
@@ -26,20 +29,24 @@ import java.util.List;
  * Created by nicholas.chi on 2018/4/18.
  */
 @RestController
+@RequestMapping(value = "/crm")
 public class VideoController {
 
     @Autowired
     AliyunOssUtils utils;
     @Autowired
     VideoService videoService;
+    @Autowired
+    UserInfoService userInfoService;
 
     private Logger logger = LogManager.getLogger(VideoController.class);
 
     @ApiOperation(value = "保存视频", notes = "")
     @RequestMapping(value = "/saveVideo",method = RequestMethod.POST,consumes = "multipart/form-data")
-    public BaseVO saveVideo(SaveVideoForm form){
+    public BaseVO saveVideo(HttpSession session, SaveVideoForm form){
         BaseVO vo = new BaseVO();
-        int userId = 0;
+        String sessionName = (String) session.getAttribute(WebSecurityConfig.SESSION_KEY);
+        int userId = userInfoService.getUserIdByUserName(sessionName);
         if(form.isEmpty()){
             vo.setRet(RetMessageEnum.PARAMETER_IS_EMPTY);
             return vo;

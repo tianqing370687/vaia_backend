@@ -2,12 +2,14 @@ package com.vaia.crm.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import com.vaia.crm.config.WebSecurityConfig;
 import com.vaia.crm.controller.form.*;
 import com.vaia.crm.controller.vo.*;
 import com.vaia.service.ArticleService;
 import com.vaia.constant.RetMessageEnum;
 import com.vaia.entity.ArticleConfiguration;
 import com.vaia.entity.ArticleDetail;
+import com.vaia.service.UserInfoService;
 import com.vaia.utils.AliyunOssUtils;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
@@ -16,14 +18,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * Created by nicholas.chi on 2018/4/16.
  */
 @RestController
+@RequestMapping(value = "/crm")
 public class ArticleController {
 
     @Autowired
     ArticleService articleService;
+    @Autowired
+    UserInfoService userInfoService;
 
     @Autowired
     AliyunOssUtils aliyunOssUtils;
@@ -44,7 +51,7 @@ public class ArticleController {
 
     @ApiOperation(value = "保存文章配置", notes = "")
     @RequestMapping(value = "/createArticleConfig",method = RequestMethod.POST,consumes = "multipart/form-data")
-    public CreateArticleConfigVO createArticleConfig(CreateArticleConfigForm form){
+    public CreateArticleConfigVO createArticleConfig(HttpSession session,CreateArticleConfigForm form){
         logger.info("method : {},param : {}",this.getClass().getSimpleName(),form.toString());
         CreateArticleConfigVO vo = new CreateArticleConfigVO();
 
@@ -53,7 +60,8 @@ public class ArticleController {
             return vo;
         }
 
-        int userId = 1;
+        String sessionName = (String) session.getAttribute(WebSecurityConfig.SESSION_KEY);
+        int userId = userInfoService.getUserIdByUserName(sessionName);
 
         String backgroundImgUrl = null;
         String thumbnailUrl = null;

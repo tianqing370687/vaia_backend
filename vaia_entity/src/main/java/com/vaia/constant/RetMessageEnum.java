@@ -20,13 +20,16 @@ public enum RetMessageEnum {
      * 参数为空
      */
     PARAMETER_IS_EMPTY("00003", "parameter_is_empty"),
-
     /**
      * 找不到对象
      * */
-    CAN_NOT_FIND_OBJECT("10000","Can_not_find_object")
+    CAN_NOT_FIND_OBJECT("10000","Can_not_find_object"),
 
 
+    USERNAME_ALREADY_EXISTS("10001","username_already_exists"),
+
+
+    PERMISSION_DENIED("10002","permission_denied")
     ;
 
 

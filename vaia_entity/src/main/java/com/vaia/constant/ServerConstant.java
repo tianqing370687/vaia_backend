@@ -28,4 +28,13 @@ public class ServerConstant {
      * */
     public static final int HOME_DISPLAY_YES = 1;
 
+    /**
+     * 系统管理员
+     * */
+    public static final String SYSTEM_ADMINISTRATOR = "vaia_admin";
+    /**
+     * 系统管理员密码
+     * */
+    public static final String SYSTEM_ADMINISTRATOR_PASSWORD = "12345678";
+
 }

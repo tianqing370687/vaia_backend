@@ -21,6 +21,7 @@ import java.util.List;
  * Created by ubuntu on 18-4-17.
  */
 @RestController
+@RequestMapping(value = "/crm")
 public class AllianceMembersController {
 
     @Autowired
