@@ -4,6 +4,7 @@ import com.vaia.constant.RetMessageEnum;
 import com.vaia.entity.UserInfo;
 import com.vaia.mapper.UserInfoMapper;
 import com.vaia.service.UserInfoService;
+import com.vaia.service.dto.LoginDTO;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,16 +25,22 @@ public class UserInfoServiceImpl implements UserInfoService {
     private Logger logger = LogManager.getLogger(UserInfoServiceImpl.class);
 
     @Override
-    public RetMessageEnum login(String userName,String password){
+    public LoginDTO login(String userName, String password){
+        LoginDTO dto = new LoginDTO();
         UserInfo userInfo = userInfoMapper.getUserInfoByUserName(userName);
         if(userInfo == null){
-            return RetMessageEnum.CAN_NOT_FIND_OBJECT;
+            dto.setRetCode(RetMessageEnum.CAN_NOT_FIND_OBJECT);
+            return dto;
         }
         String str = DigestUtils.md5Hex(DigestUtils.md5Hex(password) + userInfo.getSalt());
         if(str.equals(userInfo.getPassword())){
-            return RetMessageEnum.SUCCESS;
+            dto.setRetCode(RetMessageEnum.SUCCESS);
+            dto.setUserName(userInfo.getUserName());
+            dto.setName(userInfo.getName());
+            return dto;
         }
-        return RetMessageEnum.FAILUE;
+        dto.setRetCode(RetMessageEnum.FAILUE);
+        return dto;
     }
 
     @Override
@@ -42,6 +49,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         if(userInfo != null){
             return RetMessageEnum.USERNAME_ALREADY_EXISTS;
         }
+        userInfo = new UserInfo();
         userInfo.setUserName(userName);
         userInfo.setName(name);
 
@@ -73,6 +81,22 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public List<UserInfo> listAllUserInfo() {
         return userInfoMapper.listAllUserInfo();
+    }
+
+    @Override
+    public RetMessageEnum updatePassword(String userName,String oldPassword, String newPassword) {
+        UserInfo userInfo = userInfoMapper.getUserInfoByUserName(userName);
+        if(userInfo == null){
+            return RetMessageEnum.FAILUE;
+        }
+        String str = DigestUtils.md5Hex(DigestUtils.md5Hex(oldPassword) + userInfo.getSalt());
+        if(!str.equals(userInfo.getPassword())){
+            return RetMessageEnum.FAILUE;
+        }
+        str = DigestUtils.md5Hex(DigestUtils.md5Hex(newPassword) + userInfo.getSalt());
+        userInfo.setPassword(str);
+        userInfoMapper.updateByPrimaryKey(userInfo);
+        return RetMessageEnum.SUCCESS;
     }
 
 }

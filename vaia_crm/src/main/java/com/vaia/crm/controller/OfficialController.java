@@ -2,13 +2,17 @@ package com.vaia.crm.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import com.vaia.constant.RetMessageEnum;
 import com.vaia.constant.ServerConstant;
+import com.vaia.crm.controller.form.GetArticleDetailsForm;
 import com.vaia.crm.controller.form.HomeForm;
 import com.vaia.crm.controller.form.ListArticleByPageForm;
 import com.vaia.crm.controller.vo.BaseVO;
+import com.vaia.crm.controller.vo.GetArticleDetailsVO;
 import com.vaia.crm.controller.vo.HomeVO;
 import com.vaia.crm.controller.vo.ListArticleByPageVO;
 import com.vaia.entity.ArticleConfiguration;
+import com.vaia.entity.ArticleDetail;
 import com.vaia.entity.Video;
 import com.vaia.mapper.ArticleDetailMapper;
 import com.vaia.mapper.VideoMapper;
@@ -52,6 +56,7 @@ public class OfficialController {
         if(news != null && !news.isEmpty()){
             vo.setNews(news.get(0));
         }
+        vo.setRet(RetMessageEnum.SUCCESS);
         vo.setVideo(video);
         vo.setPageInfo(pageInfo);
         return vo;
@@ -64,7 +69,19 @@ public class OfficialController {
         Page<ArticleConfiguration> configurations = articleService.getArticleByPage(form.getPageNo(),form.getPageSize(),
                 form.getStatus(),form.getTime(),form.getTheme());
         PageInfo<ArticleConfiguration> pageInfo = new PageInfo<>(configurations);
+        vo.setRet(RetMessageEnum.SUCCESS);
         vo.setPageInfo(pageInfo);
+        return vo;
+    }
+
+    @ApiOperation(value = "获取文章详情", notes = "")
+    @RequestMapping(value = "/getArticleDetails",method = RequestMethod.POST)
+    public GetArticleDetailsVO getArticleDetails(@RequestBody GetArticleDetailsForm form){
+        ArticleConfiguration configuration = articleService.getArticleById(form.getAcId());
+        ArticleDetail detail = configuration.getArticleDetail();
+        logger.info("details : {}",detail.toString());
+        GetArticleDetailsVO vo = new GetArticleDetailsVO(configuration,detail);
+        vo.setRet(RetMessageEnum.SUCCESS);
         return vo;
     }
 

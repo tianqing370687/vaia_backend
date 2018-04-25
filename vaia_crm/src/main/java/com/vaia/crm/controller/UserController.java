@@ -5,10 +5,13 @@ import com.vaia.constant.ServerConstant;
 import com.vaia.crm.config.WebSecurityConfig;
 import com.vaia.crm.controller.form.AddUserForm;
 import com.vaia.crm.controller.form.LoginForm;
+import com.vaia.crm.controller.form.UpdatePasswordForm;
 import com.vaia.crm.controller.vo.BaseVO;
 import com.vaia.crm.controller.vo.ListUserVO;
+import com.vaia.crm.controller.vo.LoginVO;
 import com.vaia.entity.UserInfo;
 import com.vaia.service.UserInfoService;
+import com.vaia.service.dto.LoginDTO;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,18 +38,20 @@ public class UserController {
 
     @ApiOperation(value = "登录", notes = "")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public BaseVO login(HttpSession session, @RequestBody LoginForm form){
-        BaseVO vo = new BaseVO();
+    public LoginVO login(HttpSession session, @RequestBody LoginForm form){
+        LoginVO vo = new LoginVO();
         if(form.isEmpty()){
             vo.setRet(RetMessageEnum.PARAMETER_IS_EMPTY);
             return vo;
         }
-        RetMessageEnum ret = userInfoService.login(form.getUserName(),form.getPassword());
-        if(RetMessageEnum.SUCCESS == ret){
+        LoginDTO dto = userInfoService.login(form.getUserName(),form.getPassword());
+        if(RetMessageEnum.SUCCESS == dto.getRetCode()){
             // 设置session
             session.setAttribute(WebSecurityConfig.SESSION_KEY, form.getUserName());
         }
-        vo.setRet(ret);
+        vo.setRet(dto.getRetCode());
+        vo.setUserName(dto.getUserName());
+        vo.setName(dto.getName());
         return vo;
     }
 
@@ -61,6 +66,16 @@ public class UserController {
             return vo;
         }
         RetMessageEnum ret = userInfoService.addUser(sessionName,form.getUserName(),form.getName(),form.getPassword());
+        vo.setRet(ret);
+        return vo;
+    }
+
+    @ApiOperation(value = "修改密码", notes = "")
+    @RequestMapping(value = "/updatePassword",method = RequestMethod.POST)
+    public BaseVO updatePassword(HttpSession session,@RequestBody UpdatePasswordForm form){
+        BaseVO vo = new BaseVO();
+        String sessionName = (String) session.getAttribute(WebSecurityConfig.SESSION_KEY);
+        RetMessageEnum ret = userInfoService.updatePassword(sessionName,form.getOldPassword(),form.getNewPassword());
         vo.setRet(ret);
         return vo;
     }

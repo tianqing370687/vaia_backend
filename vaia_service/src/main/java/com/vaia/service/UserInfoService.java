@@ -2,6 +2,7 @@ package com.vaia.service;
 
 import com.vaia.constant.RetMessageEnum;
 import com.vaia.entity.UserInfo;
+import com.vaia.service.dto.LoginDTO;
 
 import java.util.List;
 
@@ -10,12 +11,14 @@ import java.util.List;
  */
 public interface UserInfoService {
 
-    RetMessageEnum login(String userName, String password);
+    LoginDTO login(String userName, String password);
 
     RetMessageEnum addUser(String adminName,String userName,String name,String password);
 
     int getUserIdByUserName(String userName);
 
     List<UserInfo> listAllUserInfo();
+
+    RetMessageEnum updatePassword(String userName,String oldPassword,String newPassword);
 
 }
