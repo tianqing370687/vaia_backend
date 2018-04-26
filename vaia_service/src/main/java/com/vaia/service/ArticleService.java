@@ -31,4 +31,6 @@ public interface ArticleService {
 
     List<ArticleConfiguration> getArticleByParam(int status, String time, int theme);
 
+    List<String> getYears(int theme);
+
 }

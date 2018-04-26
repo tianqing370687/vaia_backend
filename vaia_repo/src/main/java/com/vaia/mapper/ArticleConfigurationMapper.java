@@ -29,4 +29,6 @@ public interface ArticleConfigurationMapper {
 
     Page<ArticleConfiguration> getArticleByParam(Map<String, Object> map);
 //    List<ArticleConfiguration> getArticleByParam(Map<String, Object> map);
+
+    List<String> getYears(int theme);
 }

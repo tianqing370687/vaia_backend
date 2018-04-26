@@ -123,4 +123,9 @@ public class ArticleServiceImpl implements ArticleService {
         return list;
     }
 
+    @Override
+    public List<String> getYears(int theme) {
+        return articleConfigurationMapper.getYears(theme);
+    }
+
 }

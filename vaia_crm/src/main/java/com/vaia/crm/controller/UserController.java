@@ -92,7 +92,7 @@ public class UserController {
 
 
     @ApiOperation(value = "退出登录", notes = "")
-    @RequestMapping(value = "/logout",method = RequestMethod.GET)
+    @RequestMapping(value = "/logout",method = RequestMethod.POST)
     public BaseVO logout(HttpSession session){
         // 移除session
         session.removeAttribute(WebSecurityConfig.SESSION_KEY);

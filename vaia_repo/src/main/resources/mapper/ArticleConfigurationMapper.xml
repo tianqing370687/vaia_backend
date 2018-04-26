@@ -245,4 +245,8 @@
     ORDER BY release_time DESC
   </select>
 
+  <select id="getYears" resultType="java.lang.String" parameterType="java.lang.Integer">
+    SELECT DISTINCT YEAR (release_time) FROM article_configuration WHERE theme = #{theme,jdbcType=INTEGER}
+  </select>
+
 </mapper>

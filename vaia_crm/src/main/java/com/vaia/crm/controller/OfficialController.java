@@ -5,12 +5,10 @@ import com.github.pagehelper.PageInfo;
 import com.vaia.constant.RetMessageEnum;
 import com.vaia.constant.ServerConstant;
 import com.vaia.crm.controller.form.GetArticleDetailsForm;
+import com.vaia.crm.controller.form.GetYearsForm;
 import com.vaia.crm.controller.form.HomeForm;
 import com.vaia.crm.controller.form.ListArticleByPageForm;
-import com.vaia.crm.controller.vo.BaseVO;
-import com.vaia.crm.controller.vo.GetArticleDetailsVO;
-import com.vaia.crm.controller.vo.HomeVO;
-import com.vaia.crm.controller.vo.ListArticleByPageVO;
+import com.vaia.crm.controller.vo.*;
 import com.vaia.entity.ArticleConfiguration;
 import com.vaia.entity.ArticleDetail;
 import com.vaia.entity.Video;
@@ -81,6 +79,16 @@ public class OfficialController {
         ArticleDetail detail = configuration.getArticleDetail();
         logger.info("details : {}",detail.toString());
         GetArticleDetailsVO vo = new GetArticleDetailsVO(configuration,detail);
+        vo.setRet(RetMessageEnum.SUCCESS);
+        return vo;
+    }
+
+    @ApiOperation(value = "获取文章详情", notes = "")
+    @RequestMapping(value = "/getYears",method = RequestMethod.POST)
+    public GetYearsVO getYears(@RequestBody GetYearsForm form){
+        GetYearsVO vo = new GetYearsVO();
+        List<String> list = articleService.getYears(form.getTheme());
+        vo.setList(list);
         vo.setRet(RetMessageEnum.SUCCESS);
         return vo;
     }
