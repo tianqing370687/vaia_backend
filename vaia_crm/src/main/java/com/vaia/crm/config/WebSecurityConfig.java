@@ -35,9 +35,6 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
 
         InterceptorRegistration addInterceptor = registry.addInterceptor(getSecurityInterceptor());
-
-//        addInterceptor.excludePathPatterns("/**");
-
         // 排除配置
         addInterceptor.excludePathPatterns("/error");
         addInterceptor.excludePathPatterns("/crm/login");
@@ -53,7 +50,6 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter {
             if (session.getAttribute(SESSION_KEY) != null){
                 return true;
             }
-
             response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
             response.addHeader("Access-Control-Allow-Credentials", "true");
             response.addHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");

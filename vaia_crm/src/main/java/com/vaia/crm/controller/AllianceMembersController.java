@@ -37,7 +37,7 @@ public class AllianceMembersController {
             vo.setRet(RetMessageEnum.PARAMETER_IS_EMPTY);
             return vo;
         }
-        String imgUrl =utils.uploadImg(form.getImg());
+        String imgUrl =utils.uploadImg(form.getImg(),"AllianceMembers");
         if(StringUtils.isBlank(imgUrl)){
             vo.setRet(RetMessageEnum.FAILUE);
             return vo;

@@ -9,6 +9,7 @@ import com.vaia.crm.controller.form.SaveVideoForm;
 import com.vaia.crm.controller.vo.BaseVO;
 import com.vaia.crm.controller.vo.GetVideoVO;
 import com.vaia.crm.controller.vo.ListAllVideosVO;
+import com.vaia.crm.session.UserSession;
 import com.vaia.entity.Video;
 import com.vaia.mapper.VideoMapper;
 import com.vaia.service.UserInfoService;
@@ -45,13 +46,18 @@ public class VideoController {
     @RequestMapping(value = "/saveVideo",method = RequestMethod.POST,consumes = "multipart/form-data")
     public BaseVO saveVideo(HttpSession session, SaveVideoForm form){
         BaseVO vo = new BaseVO();
-        String sessionName = (String) session.getAttribute(WebSecurityConfig.SESSION_KEY);
-        int userId = userInfoService.getUserIdByUserName(sessionName);
+//        String sessionName = (String) session.getAttribute(WebSecurityConfig.SESSION_KEY);
+        UserSession userSession = (UserSession) session.getAttribute(WebSecurityConfig.SESSION_KEY);
+        if(userSession == null){
+            vo.setRet(RetMessageEnum.SESSION_TIMEOUT);
+            return vo;
+        }
+        int userId = userInfoService.getUserIdByUserName(userSession.getUserName());
         if(form.isEmpty()){
             vo.setRet(RetMessageEnum.PARAMETER_IS_EMPTY);
             return vo;
         }
-        String videoUrl = utils.uploadImg(form.getVideo());
+        String videoUrl = utils.uploadImg(form.getVideo(),"Video");
         if(StringUtils.isBlank(videoUrl)){
             vo.setRet(RetMessageEnum.FAILUE);
             return vo;
@@ -63,7 +69,7 @@ public class VideoController {
 
     @ApiOperation(value = "删除", notes = "")
     @RequestMapping(value = "/deleteVideo",method = RequestMethod.POST)
-    public BaseVO deleteVideo(@RequestBody DeleteVideoForm form){
+    public BaseVO deleteVideo(HttpSession session,@RequestBody DeleteVideoForm form){
         BaseVO vo = new BaseVO();
         videoService.deleteVideo(form.getVideoId());
         vo.setRet(RetMessageEnum.SUCCESS);
@@ -72,7 +78,7 @@ public class VideoController {
 
     @ApiOperation(value = "获取", notes = "")
     @RequestMapping(value = "/getVideo",method = RequestMethod.POST)
-    public GetVideoVO getVideo(@RequestBody GetVideoForm form){
+    public GetVideoVO getVideo(HttpSession session,@RequestBody GetVideoForm form){
         GetVideoVO vo = null;
         Video video = videoService.getVideo(form.getVideoId());
         if(video == null){
@@ -86,7 +92,7 @@ public class VideoController {
 
     @ApiOperation(value = "获取列表", notes = "")
     @RequestMapping(value = "/listAllVideos",method = RequestMethod.POST)
-    public ListAllVideosVO listAllVideos(){
+    public ListAllVideosVO listAllVideos(HttpSession session){
         ListAllVideosVO vo = new ListAllVideosVO();
         List<Video> list = videoService.listVideos();
         vo.setList(list);
@@ -96,7 +102,7 @@ public class VideoController {
 
     @ApiOperation(value = "首页显示", notes = "")
     @RequestMapping(value = "/homeDisplay",method = RequestMethod.POST)
-    public BaseVO homeDisplay(@RequestBody HomeDisplayForm form){
+    public BaseVO homeDisplay(HttpSession session,@RequestBody HomeDisplayForm form){
         BaseVO vo = new BaseVO();
         videoService.updateStatusBatch();
         int i = videoService.homeDisplay(form.getVideoId());

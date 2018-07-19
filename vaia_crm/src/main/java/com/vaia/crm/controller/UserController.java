@@ -9,6 +9,7 @@ import com.vaia.crm.controller.form.UpdatePasswordForm;
 import com.vaia.crm.controller.vo.BaseVO;
 import com.vaia.crm.controller.vo.ListUserVO;
 import com.vaia.crm.controller.vo.LoginVO;
+import com.vaia.crm.session.UserSession;
 import com.vaia.entity.UserInfo;
 import com.vaia.service.UserInfoService;
 import com.vaia.service.dto.LoginDTO;
@@ -47,7 +48,9 @@ public class UserController {
         LoginDTO dto = userInfoService.login(form.getUserName(),form.getPassword());
         if(RetMessageEnum.SUCCESS == dto.getRetCode()){
             // 设置session
-            session.setAttribute(WebSecurityConfig.SESSION_KEY, form.getUserName());
+            UserSession userSession = new UserSession(form.getUserName());
+//            session.setAttribute(WebSecurityConfig.SESSION_KEY, form.getUserName());
+            session.setAttribute(WebSecurityConfig.SESSION_KEY, userSession);
         }
         vo.setRet(dto.getRetCode());
         vo.setUserName(dto.getUserName());
@@ -59,13 +62,18 @@ public class UserController {
     @RequestMapping(value = "/addUser",method = RequestMethod.POST)
     public BaseVO addUser(HttpSession session,@RequestBody AddUserForm form){
         BaseVO vo = new BaseVO();
-        String sessionName = (String) session.getAttribute(WebSecurityConfig.SESSION_KEY);
-        logger.info("userName : {}",sessionName);
-        if(!ServerConstant.SYSTEM_ADMINISTRATOR.equals(sessionName)){
+//        String sessionName = (String) session.getAttribute(WebSecurityConfig.SESSION_KEY);
+        UserSession userSession = (UserSession) session.getAttribute(WebSecurityConfig.SESSION_KEY);
+        if(userSession == null){
+            vo.setRet(RetMessageEnum.SESSION_TIMEOUT);
+            return vo;
+        }
+        logger.info("userName : {}",userSession.getUserName());
+        if(!ServerConstant.SYSTEM_ADMINISTRATOR.equals(userSession.getUserName())){
             vo.setRet(RetMessageEnum.PERMISSION_DENIED);
             return vo;
         }
-        RetMessageEnum ret = userInfoService.addUser(sessionName,form.getUserName(),form.getName(),form.getPassword());
+        RetMessageEnum ret = userInfoService.addUser(userSession.getUserName(),form.getUserName(),form.getName(),form.getPassword());
         vo.setRet(ret);
         return vo;
     }
@@ -74,15 +82,20 @@ public class UserController {
     @RequestMapping(value = "/updatePassword",method = RequestMethod.POST)
     public BaseVO updatePassword(HttpSession session,@RequestBody UpdatePasswordForm form){
         BaseVO vo = new BaseVO();
-        String sessionName = (String) session.getAttribute(WebSecurityConfig.SESSION_KEY);
-        RetMessageEnum ret = userInfoService.updatePassword(sessionName,form.getOldPassword(),form.getNewPassword());
+//        String sessionName = (String) session.getAttribute(WebSecurityConfig.SESSION_KEY);
+        UserSession userSession = (UserSession) session.getAttribute(WebSecurityConfig.SESSION_KEY);
+        if(userSession == null){
+            vo.setRet(RetMessageEnum.SESSION_TIMEOUT);
+            return vo;
+        }
+        RetMessageEnum ret = userInfoService.updatePassword(userSession.getUserName(),form.getOldPassword(),form.getNewPassword());
         vo.setRet(ret);
         return vo;
     }
 
     @ApiOperation(value = "获取列表", notes = "")
     @RequestMapping(value = "/listUser",method = RequestMethod.GET)
-    public ListUserVO listUser(){
+    public ListUserVO listUser(HttpSession session){
         ListUserVO vo = new ListUserVO();
         List<UserInfo> list = userInfoService.listAllUserInfo();
         vo.setUserInfoList(list);

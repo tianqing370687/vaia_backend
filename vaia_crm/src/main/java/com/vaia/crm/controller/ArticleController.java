@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.vaia.crm.config.WebSecurityConfig;
 import com.vaia.crm.controller.form.*;
 import com.vaia.crm.controller.vo.*;
+import com.vaia.crm.session.UserSession;
 import com.vaia.service.ArticleService;
 import com.vaia.constant.RetMessageEnum;
 import com.vaia.entity.ArticleConfiguration;
@@ -39,9 +40,9 @@ public class ArticleController {
 
     @ApiOperation(value = "上传图片，富文本编辑器专用", notes = "")
     @RequestMapping(value = "/imgUpload",method = RequestMethod.POST)
-    public FileUploadVO imgUpload(@RequestParam("img") MultipartFile img){
+    public FileUploadVO imgUpload(HttpSession session,@RequestParam("img") MultipartFile img){
         FileUploadVO vo = new FileUploadVO();
-        String url = aliyunOssUtils.uploadImg(img);
+        String url = aliyunOssUtils.uploadImg(img,"ArticleContent");
         logger.info("the url of img is : {}",url);
         String[] data = {url};
         vo.setErrno(0);
@@ -60,8 +61,13 @@ public class ArticleController {
             return vo;
         }
 
-        String sessionName = (String) session.getAttribute(WebSecurityConfig.SESSION_KEY);
-        int userId = userInfoService.getUserIdByUserName(sessionName);
+        UserSession userSession = (UserSession) session.getAttribute(WebSecurityConfig.SESSION_KEY);
+        if(userSession == null){
+            vo.setRet(RetMessageEnum.SESSION_TIMEOUT);
+            return vo;
+        }
+//        String sessionName = (String) session.getAttribute(WebSecurityConfig.SESSION_KEY);
+        int userId = userInfoService.getUserIdByUserName(userSession.getUserName());
 
         String backgroundImgUrl = null;
         String thumbnailUrl = null;
@@ -69,16 +75,16 @@ public class ArticleController {
         String mobThumbnailUrl = null;
 
         if(form.getBackgroundImg() != null && form.getBackgroundImg().getSize() > 0){
-            backgroundImgUrl = aliyunOssUtils.uploadImg(form.getBackgroundImg());
+            backgroundImgUrl = aliyunOssUtils.uploadImg(form.getBackgroundImg(),form.getTheme()+"");
         }
         if(form.getThumbnail() != null && form.getThumbnail().getSize() > 0){
-            thumbnailUrl = aliyunOssUtils.uploadImg(form.getThumbnail());
+            thumbnailUrl = aliyunOssUtils.uploadImg(form.getThumbnail(),form.getTheme()+"");
         }
         if(form.getMobBackgroundImg() != null && form.getMobBackgroundImg().getSize() > 0){
-            mobBackgroundImgUrl = aliyunOssUtils.uploadImg(form.getMobBackgroundImg());
+            mobBackgroundImgUrl = aliyunOssUtils.uploadImg(form.getMobBackgroundImg(),form.getTheme()+"");
         }
         if(form.getMobThumbnail() != null && form.getMobThumbnail().getSize() > 0){
-            mobThumbnailUrl = aliyunOssUtils.uploadImg(form.getMobThumbnail());
+            mobThumbnailUrl = aliyunOssUtils.uploadImg(form.getMobThumbnail(),form.getTheme()+"");
         }
 
         int acId = articleService.saveArticleConfig(form.getMainTitle(),form.getSubtitle(),
@@ -92,7 +98,7 @@ public class ArticleController {
     }
     @ApiOperation(value = "根据ID获取文章配置", notes = "")
     @RequestMapping(value = "/getArticleConfig",method = RequestMethod.GET)
-    public GetArticleConfigVO getArticleConfig(int acId){
+    public GetArticleConfigVO getArticleConfig(HttpSession session,int acId){
         ArticleConfiguration configuration = articleService.getArticleConfig(acId);
         GetArticleConfigVO vo = new GetArticleConfigVO(configuration);
         vo.setRet(RetMessageEnum.SUCCESS);
@@ -101,7 +107,7 @@ public class ArticleController {
 
     @ApiOperation(value = "删除文章配置", notes = "")
     @RequestMapping(value = "/deleteArticleConfig",method = RequestMethod.POST)
-    public BaseVO deleteArticleConfig(int acId){
+    public BaseVO deleteArticleConfig(HttpSession session,int acId){
         BaseVO vo = new BaseVO();
         articleService.deleteArticleConfig(acId);
         vo.setRet(RetMessageEnum.SUCCESS);
@@ -110,7 +116,7 @@ public class ArticleController {
 
     @ApiOperation(value = "更改文章发布状态", notes = "")
     @RequestMapping(value = "/updateConfigStatus",method = RequestMethod.POST)
-    public BaseVO updateConfigStatus(@RequestBody UpdateConfigStatusForm form){
+    public BaseVO updateConfigStatus(HttpSession session,@RequestBody UpdateConfigStatusForm form){
         logger.info("method : {},param : {}",this.getClass().getSimpleName(),form.toString());
         BaseVO vo = new BaseVO();
         RetMessageEnum retMessageEnum = articleService.updateConfigStatus(form.getAcId(),form.getStatus());
@@ -120,7 +126,7 @@ public class ArticleController {
 
     @ApiOperation(value = "分页获取文章配置", notes = "")
     @RequestMapping(value = "/listArticleConfigByPage",method = RequestMethod.POST)
-    public ListArticleConfigByPageVO listArticleConfigByPage(@RequestBody ListArticleConfigByPageForm form){
+    public ListArticleConfigByPageVO listArticleConfigByPage(HttpSession session,@RequestBody ListArticleConfigByPageForm form){
         logger.info("method : {},param : {}",this.getClass().getSimpleName(),form.toString());
         ListArticleConfigByPageVO vo = new ListArticleConfigByPageVO();
         Page<ArticleConfiguration> configurations = articleService.listArticleConfigByPage(form.getPageNo(),form.getPageSize());
@@ -132,7 +138,7 @@ public class ArticleController {
 
     @ApiOperation(value = "保存文章主体", notes = "")
     @RequestMapping(value = "/saveArticle",method = RequestMethod.POST)
-    public BaseVO saveArticle(@RequestBody SaveArticleForm form){
+    public BaseVO saveArticle(HttpSession session,@RequestBody SaveArticleForm form){
         logger.info("method : {},param : {}",this.getClass().getSimpleName(),form.toString());
         BaseVO vo = new BaseVO();
         if(form.isEmpty()){
@@ -146,7 +152,7 @@ public class ArticleController {
 
     @ApiOperation(value = "获取文章详情", notes = "")
     @RequestMapping(value = "/getArticleDetails",method = RequestMethod.POST)
-    public GetArticleDetailsVO getArticleDetails(@RequestBody GetArticleDetailsForm form){
+    public GetArticleDetailsVO getArticleDetails(HttpSession session,@RequestBody GetArticleDetailsForm form){
         ArticleConfiguration configuration = articleService.getArticleById(form.getAcId());
         ArticleDetail detail = configuration.getArticleDetail();
         logger.info("details : {}",detail.toString());

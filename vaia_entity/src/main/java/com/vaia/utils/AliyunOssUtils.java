@@ -43,7 +43,7 @@ public class AliyunOssUtils {
         this.ossClient =  new OSSClient(endpoint,accessKeyId,accessKeySecret);
     }
 
-    public String uploadImg(MultipartFile file){
+    public String uploadImg(MultipartFile file,String theme){
         String objUrl = "";
         if(file == null || file.getSize() <= 0){
             return objUrl;
@@ -52,10 +52,10 @@ public class AliyunOssUtils {
         File targetFile;
         String originalFilename = file.getOriginalFilename();
         String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-        String fileName = (new Date().getTime())+"."+suffix;
+        String fileName = (new Date().getTime())+"."+suffix.trim();
         logger.info("file Name is {} ",fileName);
 
-        String key =fileName;
+        String key ="www/"+theme + "/"+ fileName;
         logger.info("the key is {}",key);
 
         try {
